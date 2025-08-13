@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Precios de Streaming</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000000;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+        .header-container {
+            position: relative;
+            width: 100%;
+            background-color: #000;
+            padding: 10px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .header-top-row {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            min-height: 80px;
+        }
+        .header-logo-wrapper {
+            flex-grow: 1; 
+            text-align: center;
+        }
+        .header-img {
+            max-height: 80px;
+            display: inline-block;
+        }
+
+        .title-animated {
+            font-size: 2rem;
+            margin: 15px 0;
+            color: #ffffff;
+            text-align: center;
+            animation: fadeInOut 3s ease-in-out infinite;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+        }
+        
+        @keyframes fadeInOut {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        .price-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            background-color: white;
+            position: relative;
+        }
+        .price-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .card-img-top {
+            height: 100px;
+            object-fit: contain;
+            padding: 10px;
+            background-color: #000000;
+        }
+        h1 {
+            color: #ffffff;
+        }
+        .card-title {
+            font-weight: bold;
+            color: #333;
+            font-size: 1rem;
+        }
+        .price-tag {
+            font-size: 1rem;
+            color: #ff0000;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .price-bs {
+            font-size: 0.9rem;
+            color: #0011ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .whatsapp-btn, .instagram-btn, .facebook-btn {
+            background-color: #ff0000;
+            color: white;
+            font-weight: bold;
+            margin: 8px;
+            padding: 8px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+            font-size: 0.8rem;
+        }
+        .whatsapp-btn:hover, .instagram-btn:hover, .facebook-btn:hover {
+            background-color: #000000;
+            color: white;
+        }
+        .fire-icon {
+            color: #ff0000;
+            margin: 0 3px;
+            font-size: 0.9rem;
+        }
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .rate-cloud {
+            position: relative;
+            background-color: #ffffff;
+            color: #000000;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            margin: 10px auto;
+            width: fit-content;
+            animation: float 3s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .rate-cloud i {
+            color: #ff0000;
+            font-size: 1rem;
+        }
+        
+        .rate-value {
+            font-weight: bold;
+            color: #ff0000;
+        }
+
+        .cart-container {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            z-index: 1000;
+        }
+        
+        .cart-button {
+            background-color: #ff0000;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .cart-button:hover {
+            transform: scale(1.1);
+            background-color: #000000;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #000000;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        
+        .cart-panel {
+            position: absolute;
+            bottom: 60px;
+            right: 0;
+            width: 300px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            padding: 12px;
+            display: none;
+            animation: slideUp 0.3s ease-out;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+        
+        .cart-item-name {
+            flex: 2;
+            font-weight: bold;
+        }
+        
+        .cart-item-price {
+            flex: 1;
+            text-align: right;
+            color: #ff0000;
+        }
+        
+        .cart-total {
+            font-weight: bold;
+            text-align: right;
+            margin-top: 12px;
+            font-size: 1rem;
+        }
+        
+        .cart-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+        }
+        
+        .cart-btn {
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.8rem;
+        }
+        
+        .cart-btn-empty {
+            background-color: #f8f9fa;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        
+        .cart-btn-empty:hover {
+            background-color: #e9ecef;
+        }
+        
+        .cart-btn-checkout {
+            background-color: #ff0000;
+            color: white;
+            border: none;
+        }
+        
+        .cart-btn-checkout:hover {
+            background-color: #9d1010e8;
+        }
+        
+        .payment-methods {
+            display: none;
+            margin-top: 12px;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .payment-method {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: #f8f9fa;
+            font-size: 0.9rem;
+        }
+        
+        .payment-method:hover {
+            background-color: #e9ecef;
+        }
+        
+        .payment-method i {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+        
+        .payment-method.selected {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+            animation: confetti 2s ease-out;
+            z-index: 1001;
+        }
+        
+        @keyframes confetti {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .card-actions {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            background-color: #f8f9fa;
+            border-top: 1px solid #eee;
+        }
+        
+        .card-btn {
+            padding: 6px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-size: 0.8rem;
+            flex: 1;
+            margin: 0 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card-btn i {
+            margin-right: 5px;
+        }
+        
+        .card-btn-add {
+            background-color: #3700ff;
+            color: white;
+            border: none;
+        }
+        
+        .card-btn-add:hover {
+            background-color: #0c125c;
+        }
+        
+        .card-btn-whatsapp {
+            background-color: #ff0000;
+            color: white;
+            border: none;
+        }
+        
+        .card-btn-whatsapp:hover {
+            background-color: #761010;
+        }
+
+        .whatsapp-modal .modal-content {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .whatsapp-modal .modal-header {
+            background-color: #ff0000;
+            color: white;
+            border-bottom: none;
+        }
+        
+        .whatsapp-modal .modal-body {
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .whatsapp-modal-btn {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            transition: all 0.3s;
+        }
+        
+        .whatsapp-modal-btn:hover {
+            background-color: #9d1010e8;
+        }
+        
+        .whatsapp-modal-btn i {
+            margin-right: 8px;
+        }
+
+        @media (max-width: 576px) {
+            .title-animated {
+                font-size: 1.5rem;
+                padding: 0 10px;
+            }
+            
+            .price-card {
+                margin-bottom: 10px;
+            }
+            
+            .card-img-top {
+                height: 80px;
+            }
+            
+            .card-title {
+                font-size: 0.9rem;
+            }
+            
+            .price-tag, .price-bs {
+                font-size: 0.8rem;
+            }
+            
+            .card-actions {
+                padding: 5px;
+            }
+            
+            .card-btn {
+                padding: 5px;
+                font-size: 0.7rem;
+            }
+            
+            .cart-panel {
+                width: 280px;
+                right: -10px;
+            }
+            
+            .social-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .whatsapp-btn, .instagram-btn, .facebook-btn {
+                width: 80%;
+                margin: 5px 0;
+            }
+            
+            .modal-footer .btn {
+                padding: 6px;
+                font-size: 0.8rem;
+            }
+        }
+
+        .modal-content {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .modal-header {
+            background-color: #ff0000;
+            color: white;
+            border-bottom: none;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            padding: 12px;
+        }
+        
+        .modal-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .modal-body {
+            padding: 15px;
+        }
+        
+        .modal-body ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 0;
+        }
+        
+        .modal-body ul li {
+            margin-bottom: 6px;
+            color: #333;
+            font-size: 0.9rem;
+        }
+        
+        .modal-body ul li i {
+            margin-right: 6px;
+            color: #ff0000;
+        }
+        
+        .modal-footer {
+            border-top: none;
+            justify-content: space-between;
+            padding: 10px;
+        }
+        
+        .modal-footer .btn {
+            padding: 6px 12px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-close-modal {
+            background-color: #000000;
+            color: white;
+            border: none;
+        }
+        
+        .btn-close-modal:hover {
+            background-color: #333;
+        }
+        
+        .btn-add-to-cart {
+            background-color: #ff0404;
+            color: white;
+            border: none;
+        }
+        
+        .btn-add-to-cart:hover {
+            background-color: #db1515c2;
+        }
+        
+        .btn-whatsapp-modal {
+            background-color: #ff0000;
+            color: white;
+            border: none;
+        }
+        
+        .btn-whatsapp-modal:hover {
+            background-color: #c01717c6;
+        }
+        
+        .btn-close-white {
+            filter: invert(1);
+        }
+    </style>
+</head>
+<body>
+    <div class="header-container">
+        <div class="header-top-row">
+            <div class="header-logo-wrapper">
+                <img src="log.jpeg" alt="Logo" class="header-img">
+            </div>
+        </div>
+    </div>
+
+    <div class="container text-center">
+        <!-- Nube de tasa BCV animada -->
+        <div class="rate-cloud animate__animated animate__bounceIn">
+            <i class="fas fa-exchange-alt"></i>
+            Tasa BCV: 
+            <span class="rate-value" id="exchangeRateValue">133.51</span> Bs/$
+        </div>
+        
+        <h1 class="title-animated animate__animated animate__fadeIn">LISTADO DE PRECIOS</h1>
+    </div>
+
+    <div class="container">
+        <div class="row" id="price-cards-container">
+        </div>
+
+        <div class="text-center my-3">
+            <div class="social-buttons">
+                <a href="https://www.instagram.com/stream_jk?igsh=bXdpY2hwc2F2bWM4" target="_blank" class="instagram-btn">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=61571552168967" target="_blank" class="facebook-btn">
+                    <i class="fab fa-facebook-f"></i> Facebook
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carrito flotante -->
+    <div class="cart-container">
+        <div class="cart-button" id="cartButton">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count" id="cartCount">0</span>
+        </div>
+        <div class="cart-panel" id="cartPanel">
+            <h5>Mi Carrito</h5>
+            <div id="cartItems"></div>
+            <div class="cart-total">
+                Total: <span id="cartTotalUsd">0</span>$ / <span id="cartTotalBs">0</span> Bs
+            </div>
+            
+            <div class="payment-methods" id="paymentMethods">
+                <h6>Seleccione método de pago:</h6>
+                <div class="payment-method" data-method="pago-movil">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>Pago Móvil</span>
+                </div>
+                <div class="payment-method" data-method="zinli">
+                    <i class="fas fa-wallet"></i>
+                    <span>Zinli</span>
+                </div>
+                <div class="payment-method" data-method="usdt">
+                    <i class="fab fa-bitcoin"></i>
+                    <span>USDT</span>
+                </div>
+                <div class="payment-method" data-method="wally">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span>Wally</span>
+                </div>
+            </div>
+            
+            <div class="cart-actions">
+                <button class="cart-btn cart-btn-empty" id="emptyCartBtn">
+                    <i class="fas fa-trash"></i> Vaciar
+                </button>
+                <button class="cart-btn cart-btn-checkout" id="checkoutBtn">
+                    <i class="fab fa-whatsapp"></i> Comprar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de producto -->
+    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productModalLabel"></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img id="modalProductImage" src="" alt="" class="img-fluid mb-3" style="max-height: 120px; display: block; margin: 0 auto;">
+                    <ul id="modalProductCharacteristics">
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-close-modal" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i> Cerrar
+                    </button>
+                    <button type="button" class="btn btn-add-to-cart" id="modalAddToCartBtn">
+                        <i class="fas fa-cart-plus"></i> Añadir
+                    </button>
+                    <button type="button" class="btn btn-whatsapp-modal" id="modalWhatsappBtn">
+                        <i class="fab fa-whatsapp"></i> Comprar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de selección de WhatsApp -->
+    <div class="modal fade whatsapp-modal" id="whatsappModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Seleccione Línea</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <button class="btn whatsapp-modal-btn mb-2" id="whatsapp1ModalBtn">
+                        <i class="fab fa-whatsapp"></i> Línea 1
+                    </button>
+                    <button class="btn whatsapp-modal-btn" id="whatsapp2ModalBtn">
+                        <i class="fab fa-whatsapp"></i> Línea 2
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de selección de método de pago para compra directa -->
+    <div class="modal fade" id="paymentMethodModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Seleccione método de pago</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="payment-method" data-method="pago-movil">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Pago Móvil</span>
+                    </div>
+                    <div class="payment-method" data-method="zinli">
+                        <i class="fas fa-wallet"></i>
+                        <span>Zinli</span>
+                    </div>
+                    <div class="payment-method" data-method="usdt">
+                        <i class="fab fa-bitcoin"></i>
+                        <span>USDT</span>
+                    </div>
+                    <div class="payment-method" data-method="wally">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Wally</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Datos de los servicios con características añadidas
+        const services = [
+            { 
+                name: "NETFLIX", 
+                price: 3, 
+                image: "netflix.jpeg", 
+                featured: true,
+                characteristics: [
+                    "1 Pantalla", 
+                    "Calidad Ultra HD (4K)", 
+                    "Dispositivos ilimitados", 
+                    "Contenido original y exclusivo", 
+                    "Descargas disponibles"
+                ] 
+            },
+            { 
+                name: "DISNEY PLUS", 
+                price: 2.6, 
+                image: "disney.jpeg", 
+                featured: true,
+                characteristics: [
+                    "1 Pantalla", 
+                    "Calidad Full HD", 
+                    "Contenido de Disney, Pixar, Marvel, Star Wars, National Geographic",
+                    "Perfiles infantiles seguros"
+                ] 
+            },
+            { 
+                name: "PRIME VIDEO", 
+                price: 2.3, 
+                image: "primevideo.jpeg", 
+                featured: true,
+                characteristics: [
+                    "1 Pantalla", 
+                    "Calidad HD", 
+                    "Incluido con Amazon Prime", 
+                    "Películas y series galardonadas", 
+                    "Descargas disponibles"
+                ] 
+            },
+            { 
+                name: "CRUNCHYROLL", 
+                price: 2.3, 
+                image: "crunchyroll.jpeg",
+                characteristics: [
+                    "1 Pantalla", 
+                    "Acceso a miles de animes", 
+                    "Nuevos episodios una hora después de Japón", 
+                    "Sin anuncios"
+                ] 
+            },
+            { 
+                name: "FLUJO TV", 
+                price: 2.6, 
+                image: "flujotv.jpeg",
+                characteristics: [
+                    "Acceso a canales de TV en vivo", 
+                    "Variedad de contenido nacional e internacional", 
+                    "Fácil de usar"
+                ] 
+            },
+            { 
+                name: "CANVA PRO (1 mes)", 
+                price: 2.3, 
+                image: "canva.jpeg",
+                characteristics: [
+                    "Acceso completo a funciones Pro por 1 mes", 
+                    "Plantillas ilimitadas", 
+                    "Biblioteca de fotos y elementos premium", 
+                    "Herramientas de diseño avanzadas"
+                ] 
+            },
+            { 
+                name: "PARAMOUNT+ (Perfil)", 
+                price: 2.3, 
+                image: "paramount.jpeg",
+                characteristics: [
+                    "1 Perfil", 
+                    "Contenido exclusivo de Paramount", 
+                    "Shows de Showtime y MTV", 
+                    "Películas y series"
+                ] 
+            },
+            { 
+                name: "Vix (Perfil)", 
+                price: 2.3, 
+                image: "vix.jpeg",
+                characteristics: [
+                    "1 Perfil", 
+                    "Amplia variedad de contenido en español", 
+                    "Novelas, series, películas y deportes en vivo", 
+                    "Acceso a eventos exclusivos"
+                ] 
+            },
+            { 
+                name: "MAX (Pantalla)", 
+                price: 2.3, 
+                image: "max.jpeg",
+                characteristics: [
+                    "1 Pantalla", 
+                    "Contenido de HBO, Warner Bros., DC, Cartoon Network", 
+                    "Películas y series de estreno", 
+                    "Calidad HD"
+                ] 
+            },
+            { 
+                name: "SPOTIFY (Perfil)", 
+                price: 3.3, 
+                image: "spotify.jpeg",
+                characteristics: [
+                    "1 Perfil Premium", 
+                    "Música sin anuncios", 
+                    "Descargas para escuchar sin conexión", 
+                    "Saltos ilimitados", 
+                    "Audio de alta calidad"
+                ] 
+            },
+            { 
+                name: "YOUTUBE PREMIUM (Perfil)", 
+                price: 3, 
+                image: "youtube.jpeg",
+                characteristics: [
+                    "1 Perfil Premium", 
+                    "Videos sin anuncios", 
+                    "Reproducción en segundo plano", 
+                    "Descargas de videos", 
+                    "Acceso a YouTube Music Premium"
+                ] 
+            }
+        ];
+
+        // Variables globales
+        const WHATSAPP_NUMBER_1 = '584248433315';
+        const WHATSAPP_NUMBER_2 = '5491134761792';
+        const currentExchangeRate = 133.51;
+        let cart = [];
+        let selectedPaymentMethod = null;
+        let currentProductIndex = null;
+        let cartTimeout = null;
+        let directPurchaseProduct = null;
+        
+        // Referencias a los modales de Bootstrap
+        const productModal = new bootstrap.Modal(document.getElementById('productModal'));
+        const whatsappModal = new bootstrap.Modal(document.getElementById('whatsappModal'));
+        const paymentMethodModal = new bootstrap.Modal(document.getElementById('paymentMethodModal'));
+        
+        // Referencias a elementos del DOM
+        const priceCardsContainer = document.getElementById('price-cards-container');
+        const exchangeRateValue = document.getElementById('exchangeRateValue');
+        const cartButton = document.getElementById('cartButton');
+        const cartPanel = document.getElementById('cartPanel');
+        const cartCount = document.getElementById('cartCount');
+        const cartItems = document.getElementById('cartItems');
+        const cartTotalUsd = document.getElementById('cartTotalUsd');
+        const cartTotalBs = document.getElementById('cartTotalBs');
+        const emptyCartBtn = document.getElementById('emptyCartBtn');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const paymentMethods = document.getElementById('paymentMethods');
+        const modalAddToCartBtn = document.getElementById('modalAddToCartBtn');
+        const modalWhatsappBtn = document.getElementById('modalWhatsappBtn');
+        const whatsapp1ModalBtn = document.getElementById('whatsapp1ModalBtn');
+        const whatsapp2ModalBtn = document.getElementById('whatsapp2ModalBtn');
+
+        // Funciones de Utilidad
+        function calculateBsPrice(usdPrice) {
+            return (usdPrice * currentExchangeRate).toFixed(2);
+        }
+
+        function updateAllBsPrices() {
+            document.querySelectorAll('.price-card').forEach((card, index) => {
+                const service = services[index];
+                const bsPriceElement = card.querySelector('.price-bs');
+                if (bsPriceElement) {
+                    bsPriceElement.textContent = `${calculateBsPrice(service.price)} Bs`;
+                }
+            });
+        }
+
+        function updateCartUI() {
+            cartCount.textContent = cart.length;
+            
+            if (cart.length > 0) {
+                cartPanel.style.display = 'block';
+                
+                if (cartTimeout) clearTimeout(cartTimeout);
+                cartTimeout = setTimeout(() => {
+                    cartPanel.style.display = 'none';
+                }, 5000);
+            } else {
+                cartPanel.style.display = 'none';
+                paymentMethods.style.display = 'none';
+                selectedPaymentMethod = null;
+            }
+            
+            cartItems.innerHTML = '';
+            let totalUsd = 0;
+            
+            cart.forEach((item, index) => {
+                totalUsd += item.price;
+                
+                const cartItemElement = document.createElement('div');
+                cartItemElement.className = 'cart-item';
+                cartItemElement.innerHTML = `
+                    <div class="cart-item-name">${item.name}</div>
+                    <div class="cart-item-price">${item.price}$ / ${calculateBsPrice(item.price)} Bs</div>
+                    <button class="btn btn-sm btn-danger remove-item" data-index="${index}">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                cartItems.appendChild(cartItemElement);
+            });
+            
+            cartTotalUsd.textContent = totalUsd.toFixed(2);
+            cartTotalBs.textContent = calculateBsPrice(totalUsd);
+            
+            document.querySelectorAll('.remove-item').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    removeFromCart(index);
+                });
+            });
+        }
+
+        function addToCart(productIndex) {
+            const product = services[productIndex];
+            cart.push({
+                name: product.name,
+                price: product.price,
+                image: product.image
+            });
+            updateCartUI();
+            createConfetti();
+            
+            const cartBtn = cartButton;
+            cartBtn.classList.add('animate__animated', 'animate__bounce');
+            setTimeout(() => {
+                cartBtn.classList.remove('animate__animated', 'animate__bounce');
+            }, 1000);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function emptyCart() {
+            cart = [];
+            updateCartUI();
+        }
+
+        function generateWhatsAppMessage() {
+            let message = "¡Hola JKStreaming! Estoy interesado en los siguientes servicios:\n\n";
+            
+            let totalUsd = 0;
+            cart.forEach(item => {
+                message += `- *${item.name}:* ${item.price}$ / ${calculateBsPrice(item.price)} Bs\n`;
+                totalUsd += item.price;
+            });
+            
+            message += `\n*Total:* ${totalUsd.toFixed(2)}$ / ${calculateBsPrice(totalUsd)} Bs\n`;
+            message += `\n*Método de pago seleccionado:* ${getPaymentMethodName(selectedPaymentMethod)}.\n`;
+            message += "\nPor favor, necesito más información. ¡Gracias!";
+            
+            return encodeURIComponent(message);
+        }
+
+        function generateDirectPurchaseMessage(product) {
+            let message = `¡Hola JKStreaming! Estoy interesado(a) en el siguiente servicio:\n\n`;
+            message += `- *${product.name}:* ${product.price}$ / ${calculateBsPrice(product.price)} Bs\n\n`;
+            message += `*Método de pago seleccionado:* ${getPaymentMethodName(selectedPaymentMethod)}.\n`;
+            message += "\nPor favor, necesito más información. ¡Gracias!";
+            return encodeURIComponent(message);
+        }
+
+        function getPaymentMethodName(method) {
+            switch(method) {
+                case 'pago-movil': return 'Pago Móvil';
+                case 'zinli': return 'Zinli';
+                case 'usdt': return 'USDT';
+                case 'wally': return 'Wally';
+                default: return '';
+            }
+        }
+
+        function createConfetti() {
+            const colors = ['#f00', '#0f0', '#00f', '#ff0', '#f0f', '#0ff'];
+            
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.bottom = '0';
+                confetti.style.animationDelay = `${Math.random() * 0.5}s`;
+                
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 2000);
+            }
+        }
+
+        function setupPaymentMethods(modalId, callback) {
+            const modal = document.getElementById(modalId);
+            
+            modal.querySelectorAll('.payment-method').forEach(method => {
+                method.addEventListener('click', function() {
+                    modal.querySelectorAll('.payment-method').forEach(m => {
+                        m.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                    selectedPaymentMethod = this.getAttribute('data-method');
+                    
+                    if (selectedPaymentMethod && callback) {
+                        callback();
+                    }
+                });
+            });
+        }
+
+        function generatePriceCards() {
+            priceCardsContainer.innerHTML = '';
+            
+            services.forEach((service, index) => {
+                const cardCol = document.createElement('div');
+                cardCol.className = 'col-12 col-sm-6 col-md-4 col-lg-3';
+                
+                const cardHTML = `
+                    <div class="card price-card animate__animated animate__fadeIn" data-service-index="${index}">
+                        <img src="${service.image}" class="card-img-top" alt="${service.name}">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">
+                                ${service.featured ? '<i class="fas fa-fire fire-icon"></i>' : ''}
+                                ${service.name}
+                                ${service.featured ? '<i class="fas fa-fire fire-icon"></i>' : ''}
+                            </h5>
+                            <p class="price-tag">${service.price}$</p>
+                            <p class="price-bs">${calculateBsPrice(service.price)} Bs</p>
+                        </div>
+                        <div class="card-actions">
+                            <button class="card-btn card-btn-add" data-service-index="${index}">
+                                <i class="fas fa-cart-plus"></i> Añadir
+                            </button>
+                            <button class="card-btn card-btn-whatsapp" data-service-index="${index}">
+                                <i class="fab fa-whatsapp"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                cardCol.innerHTML = cardHTML;
+                priceCardsContainer.appendChild(cardCol);
+                
+                const card = cardCol.querySelector('.price-card');
+                
+                card.addEventListener('click', (e) => {
+                    if (!e.target.closest('.card-btn')) {
+                        createConfetti();
+                        currentProductIndex = index;
+                        productModal.show();
+                    }
+                });
+                
+                const addBtn = cardCol.querySelector('.card-btn-add');
+                addBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    addToCart(index);
+                });
+                
+                const whatsappBtn = cardCol.querySelector('.card-btn-whatsapp');
+                whatsappBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    directPurchaseProduct = services[index];
+                    paymentMethodModal.show();
+                });
+            });
+        }
+
+        // Event Listeners
+        document.getElementById('productModal').addEventListener('show.bs.modal', event => {
+            const button = event.relatedTarget;
+            const serviceIndex = currentProductIndex !== null ? currentProductIndex : button.getAttribute('data-service-index');
+            const service = services[serviceIndex];
+            
+            currentProductIndex = serviceIndex;
+
+            document.getElementById('productModalLabel').textContent = service.name;
+            document.getElementById('modalProductImage').src = service.image;
+            document.getElementById('modalProductImage').alt = service.name;
+            
+            const modalCharacteristics = document.getElementById('modalProductCharacteristics');
+            modalCharacteristics.innerHTML = '';
+            if (service.characteristics && service.characteristics.length > 0) {
+                service.characteristics.forEach(char => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<i class="fas fa-check-circle"></i> ${char}`;
+                    modalCharacteristics.appendChild(li);
+                });
+            } else {
+                const li = document.createElement('li');
+                li.innerHTML = '<i class="fas fa-info-circle"></i> No hay características detalladas disponibles.';
+                modalCharacteristics.appendChild(li);
+            }
+
+            modalWhatsappBtn.onclick = () => {
+                directPurchaseProduct = services[currentProductIndex];
+                paymentMethodModal.show();
+            };
+        });
+
+        cartButton.addEventListener('click', () => {
+            if (cart.length > 0) {
+                cartPanel.style.display = cartPanel.style.display === 'block' ? 'none' : 'block';
+                
+                if (cartPanel.style.display === 'block' && cartTimeout) {
+                    clearTimeout(cartTimeout);
+                    cartTimeout = setTimeout(() => {
+                        cartPanel.style.display = 'none';
+                    }, 5000);
+                }
+            }
+        });
+
+        emptyCartBtn.addEventListener('click', emptyCart);
+
+        checkoutBtn.addEventListener('click', () => {
+            if (paymentMethods.style.display === 'block') {
+                if (selectedPaymentMethod) {
+                    whatsappModal.show();
+                } else {
+                    alert('Por favor seleccione un método de pago');
+                }
+            } else {
+                paymentMethods.style.display = 'block';
+            }
+        });
+
+        modalAddToCartBtn.addEventListener('click', () => {
+            if (currentProductIndex !== null) {
+                addToCart(currentProductIndex);
+                productModal.hide();
+            }
+        });
+
+        whatsapp1ModalBtn.addEventListener('click', () => {
+            if (!selectedPaymentMethod) {
+                alert('Por favor seleccione un método de pago');
+                return;
+            }
+            
+            const message = cart.length > 0 ? generateWhatsAppMessage() : generateDirectPurchaseMessage(directPurchaseProduct);
+            window.open(`https://wa.me/${WHATSAPP_NUMBER_1}?text=${message}`, '_blank');
+            whatsappModal.hide();
+            directPurchaseProduct = null;
+        });
+
+        whatsapp2ModalBtn.addEventListener('click', () => {
+            if (!selectedPaymentMethod) {
+                alert('Por favor seleccione un método de pago');
+                return;
+            }
+            
+            const message = cart.length > 0 ? generateWhatsAppMessage() : generateDirectPurchaseMessage(directPurchaseProduct);
+            window.open(`https://wa.me/${WHATSAPP_NUMBER_2}?text=${message}`, '_blank');
+            whatsappModal.hide();
+            directPurchaseProduct = null;
+        });
+
+        setupPaymentMethods('paymentMethods', () => {});
+        setupPaymentMethods('paymentMethodModal', () => {
+            paymentMethodModal.hide();
+            whatsappModal.show();
+        });
+
+        // Inicialización
+        window.onload = function() {
+            exchangeRateValue.textContent = currentExchangeRate;
+            generatePriceCards();
+            
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.cart-container') && cartPanel.style.display === 'block') {
+                    cartPanel.style.display = 'none';
+                }
+            });
+        };
+    </script>
+</body>
+</html>
